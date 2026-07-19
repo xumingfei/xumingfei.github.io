@@ -12,30 +12,26 @@
     display: none !important;
 }
 
-/* 外层遮挡 Utterances iframe 顶部 "powered by utteranc.es" 小字
-   iframe 跨域无法改样式，只能从外面用同色块盖住顶部 */
+/* 隐藏 Utterances iframe 中 "powered by utteranc.es" 小字
+   实测位置：iframe 顶部 y=10~40px，右侧 170px 宽
+   用 clip-path 切掉这块区域，跨域 iframe 也能生效 */
 #utterances-wrap {
     position: relative;
-}
-/* 消除 iframe 默认 margin，确保 ::before 正好盖在 iframe 顶部 */
-#utterances-wrap > iframe {
     display: block;
-    margin-top: 0 !important;
 }
-#utterances-wrap::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 60px;          /* 加大到 60px 确保整条 header bar 被盖住 */
-    /* Utterances github-light 主题背景为纯白 */
-    background: #ffffff;
-    z-index: 99;
-    pointer-events: none;
-}
-
-/* 暗黑模式：github-dark 主题背景为 #0d1117 */
-[data-theme="dark"] #utterances-wrap::before {
-    background: #0d1117;
+#utterances-wrap iframe {
+    display: block;
+    margin: 0 !important;
+    /* 切掉右上角 150px × 30px（y: 10~40）的矩形
+       宽度按 "powered by" 文字实际 148.7px + 微量余量 */
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 100%,
+        0 100%,
+        0 40px,
+        calc(100% - 150px) 40px,
+        calc(100% - 150px) 10px,
+        0 10px
+    ) !important;
 }
