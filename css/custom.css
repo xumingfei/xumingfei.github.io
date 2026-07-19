@@ -1,3 +1,41 @@
 #footer .footer-info {
     display: none !important;
 }
+
+/* 删除评论容器上方的分割线 <hr class="custom-hr"> */
+.custom-hr:has(+ #post-comment) {
+    display: none !important;
+}
+
+/* 删除左上角 评论 icon + 文字（整个 comment-head） */
+#post-comment .comment-head {
+    display: none !important;
+}
+
+/* 外层遮挡 Utterances iframe 顶部 "powered by utteranc.es" 小字
+   iframe 跨域无法改样式，只能从外面用同色块盖住顶部 */
+#utterances-wrap {
+    position: relative;
+}
+/* 消除 iframe 默认 margin，确保 ::before 正好盖在 iframe 顶部 */
+#utterances-wrap > iframe {
+    display: block;
+    margin-top: 0 !important;
+}
+#utterances-wrap::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 60px;          /* 加大到 60px 确保整条 header bar 被盖住 */
+    /* Utterances github-light 主题背景为纯白 */
+    background: #ffffff;
+    z-index: 99;
+    pointer-events: none;
+}
+
+/* 暗黑模式：github-dark 主题背景为 #0d1117 */
+[data-theme="dark"] #utterances-wrap::before {
+    background: #0d1117;
+}
